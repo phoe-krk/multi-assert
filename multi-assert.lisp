@@ -2,6 +2,8 @@
 ;; License: GNU GPLv3
 
 (defmacro multi-assert (vars predicates)
+  `(%multi-assert ,vars ,(reverse predicates)))
+(defmacro %multi-assert (vars predicates)
   (if predicates
       `(assert (progn (multi-assert ,vars ,(cdr predicates))
 		      ,(caar predicates))
