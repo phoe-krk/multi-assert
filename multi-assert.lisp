@@ -1,7 +1,10 @@
 ;; MULTI-ASSERT by Michal Herda
 ;; License: GNU GPLv3
 
-;; MULTI-ASSERT - a simple tool
+;; MULTI-ASSERT - a simple tool.
+;; MULTI-ASSERT takes a list of variables and a list of predicates - almost like an
+;; usual ASSERT. Though, the list of predicates is extensible and is executed with
+;; nested ASSERTs in order in which they appear on the original list.
 
 (defmacro multi-assert (vars predicates)
   (macrolet
@@ -11,19 +14,6 @@
 			     ,(caar predicates))
 		      ,vars ,(cadar predicates) ,@(cddar predicates)))))
     `(%multi-assert ,vars ,(reverse predicates))))
-
-;; Example usage, customize the X value to your liking.
-
-(let ((x 15))
-  (multi-assert (x)
-    (((typep x 'integer)
-      "X must be an integer.")
-     ((/= x 25)
-      "X must not equal 25.") 
-     ((< x 50)
-      "X must be less than 50.")
-     ((> x 0)
-      "X must be more than 0."))))
 
 ;; MAKE-ASSERT - a powerful tool
 ;; In DEFMASSERT you specify the name under which this multi-assert will be available,
@@ -64,6 +54,20 @@
      ,(apply #'append (mapcar #'get-codes-list keywords))))
      
 ;; Examples of use:
+
+(let ((x 15)) ; customize the X value to your liking.
+  (multi-assert (x)
+    (((typep x 'integer)
+      "X must be an integer.")
+     ((/= x 25)
+      "X must not equal 25.") 
+     ((< x 50)
+      "X must be less than 50.")
+     ((> x 0)
+      "X must be more than 0."))))
+
+;; MAKE-ASSERT examples and usage
+
 (defmassert :name
     ((name)
      ()
@@ -105,6 +109,7 @@
       ((plusp (+ left right (array-dimension (world-map world) 1)))
        "The resulting Y size must be at least 1."))))
        
-;; And then:
+;; And then in a context where the proper variables (WORLD UP LEFT DOWN RIGHT COORDS)
+;; have assigned values:
  
 (make-assert :coord-bounds :resize)
