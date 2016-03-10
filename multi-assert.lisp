@@ -6,14 +6,13 @@
 ;; usual ASSERT. Though, the list of predicates is extensible and is executed with
 ;; nested ASSERTs in order in which they appear on the original list.
 
+(defmacro %multi-assert (vars predicates)
+  (when predicates
+    `(assert (progn (%multi-assert ,vars ,(cdr predicates))
+		    ,(caar predicates))
+	     ,vars ,(cadar predicates) ,@(cddar predicates))))
 (defmacro multi-assert (vars predicates)
-  (macrolet
-      ((%multi-assert (vars predicates)
-	 (if predicates
-	     `(assert (progn (%multi-assert ,vars ,(cdr predicates))
-			     ,(caar predicates))
-		      ,vars ,(cadar predicates) ,@(cddar predicates)))))
-    `(%multi-assert ,vars ,(reverse predicates))))
+  `(%multi-assert ,vars ,(reverse predicates))) 
 
 ;; MAKE-ASSERT - a powerful tool
 ;; In DEFMASSERT you specify the name under which this multi-assert will be available,
