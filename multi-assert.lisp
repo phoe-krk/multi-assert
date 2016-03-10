@@ -7,7 +7,7 @@
   (if predicates
       `(assert (progn (%multi-assert ,vars ,(cdr predicates))
 		      ,(caar predicates))
-	       ,vars ,(cadar predicates) ,(cddadr predicates))))
+	       ,vars ,(cadar predicates) ,@(cddadr predicates))))
 
 ;; Example usage, customize the X value to your liking.
 
