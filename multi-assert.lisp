@@ -5,7 +5,7 @@
   `(%multi-assert ,vars ,(reverse predicates)))
 (defmacro %multi-assert (vars predicates)
   (if predicates
-      `(assert (progn (multi-assert ,vars ,(cdr predicates))
+      `(assert (progn (%multi-assert ,vars ,(cdr predicates))
 		      ,(caar predicates))
 	       ,vars ,(cadar predicates) ,(cddadr predicates))))
 
