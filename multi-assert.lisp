@@ -1,5 +1,5 @@
 ;; MULTI-ASSERT by Michal Herda
-;; License: GNU GPLv3
+;; License: BSD 2-clause
 
 ;; MULTI-ASSERT - a simple tool.
 ;; MULTI-ASSERT takes a list of variables and a list of predicates - almost like an
